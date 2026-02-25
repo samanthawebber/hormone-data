@@ -1,0 +1,42 @@
+<section class="mb-8 grid gap-6 rounded-3xl border border-violet-200 bg-gradient-to-r from-[#f3ecdd] via-[#eef5f2] to-[#edf0fa] p-8 shadow-sm">
+  <div class="max-w-2xl space-y-3">
+    <p class="text-xs uppercase tracking-[0.18em] text-violet-600">Community Research</p>
+    <h2 class="text-3xl font-semibold text-slate-900">Submit and explore hormone trends together</h2>
+    <p class="text-sm leading-relaxed text-slate-700">
+      Build studies with custom parameters, submit anonymously, and see shared charts in real time.
+    </p>
+  </div>
+  <div>
+    <%= link_to "Create new study", new_study_path, class: "inline-flex items-center rounded-xl bg-violet-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-violet-700" %>
+  </div>
+</section>
+
+<section class="grid gap-4 md:grid-cols-2">
+  <% if @studies.any? %>
+    <% @studies.each do |study| %>
+      <article class="rounded-2xl border border-slate-200 bg-white/90 p-5 shadow-sm">
+        <p class="text-xs uppercase tracking-[0.15em] text-cyan-600"><%= study.topic.presence || "General" %></p>
+        <h3 class="mt-1 text-xl font-semibold text-emerald-800"><%= study.title %></h3>
+        <p class="mt-2 text-sm text-slate-700"><%= truncate(study.description, length: 180) %></p>
+
+        <div class="mt-4 flex flex-wrap gap-2">
+          <% study.study_parameters.each do |parameter| %>
+            <span class="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs text-emerald-700">
+              <%= parameter.name %><%= parameter.unit.present? ? " (#{parameter.unit})" : "" %>
+            </span>
+          <% end %>
+        </div>
+
+        <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
+          <span><%= pluralize(study.submissions.count, "submission") %></span>
+          <%= link_to "Open study", study_path(study), class: "font-semibold text-blue-600 hover:text-blue-700" %>
+        </div>
+      </article>
+    <% end %>
+  <% else %>
+    <article class="rounded-2xl border border-slate-200 bg-white/90 p-6 shadow-sm md:col-span-2">
+      <h3 class="text-lg font-semibold text-violet-700">No studies yet</h3>
+      <p class="mt-1 text-sm text-slate-600">Create the first one to start collecting anonymous hormone data.</p>
+    </article>
+  <% end %>
+</section>

@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Manrope:wght@400;500;600&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Manrope", sans-serif;
+  background-image: radial-gradient(circle at 20% 0%, rgba(16, 185, 129, 0.08), transparent 38%),
+                    radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.08), transparent 35%),
+                    radial-gradient(circle at 50% 100%, rgba(139, 92, 246, 0.08), transparent 40%);
+}
+
+h1, h2, h3 {
+  font-family: "Fraunces", serif;
+}
+
+canvas {
+  min-height: 240px;
+}

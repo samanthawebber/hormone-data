@@ -1,0 +1,30 @@
+<section class="mx-auto max-w-lg rounded-2xl border border-slate-200 bg-white/95 p-6 shadow-sm">
+  <h2 class="text-2xl font-semibold text-emerald-800">Create account</h2>
+  <p class="mt-1 text-sm text-slate-600">Use your account to create studies and submit data.</p>
+
+  <%= form_with model: @user, class: "mt-5 space-y-4" do |form| %>
+    <% if @user.errors.any? %>
+      <div class="rounded-xl border border-rose-300 bg-rose-50 p-3 text-sm text-rose-700">
+        <%= @user.errors.full_messages.to_sentence %>
+      </div>
+    <% end %>
+
+    <div>
+      <%= form.label :email, class: "mb-1 block text-sm font-medium text-slate-700" %>
+      <%= form.email_field :email, required: true, class: "w-full rounded-xl border-slate-300" %>
+    </div>
+
+    <div>
+      <%= form.label :password, class: "mb-1 block text-sm font-medium text-slate-700" %>
+      <%= form.password_field :password, required: true, class: "w-full rounded-xl border-slate-300" %>
+    </div>
+
+    <div>
+      <%= form.label :password_confirmation, class: "mb-1 block text-sm font-medium text-slate-700" %>
+      <%= form.password_field :password_confirmation, required: true, class: "w-full rounded-xl border-slate-300" %>
+    </div>
+
+    <%= form.submit "Sign up", class: "w-full rounded-xl bg-cyan-600 px-4 py-2 text-sm font-semibold text-white hover:bg-cyan-700" %>
+    <p class="text-center text-sm text-slate-600">Already registered? <%= link_to "Log in", login_path, class: "font-semibold text-cyan-700" %></p>
+  <% end %>
+</section>
