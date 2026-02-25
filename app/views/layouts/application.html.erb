@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hormone Data Commons</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+
+  <body class="min-h-screen bg-[#f4efe3] text-slate-800">
+    <main class="mx-auto w-full max-w-6xl px-4 pb-10 pt-8 sm:px-6 lg:px-8">
+      <header class="mb-8 rounded-2xl border border-emerald-200 bg-[#f7f2e8]/90 p-6 shadow-sm">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="text-xs uppercase tracking-[0.2em] text-teal-600">Anonymous + Account-Linked</p>
+            <h1 class="text-2xl font-semibold text-emerald-700">Hormone Data Commons</h1>
+          </div>
+          <% if logged_in? %>
+            <div class="flex items-center gap-3 rounded-xl border border-cyan-200 bg-white/80 px-3 py-2 text-xs text-cyan-700">
+              <div>
+                <p><span class="font-semibold">Signed in:</span> <%= current_user.email %></p>
+                <p><span class="font-semibold">Public alias:</span> <%= current_user.anonymous_handle %></p>
+              </div>
+              <%= button_to "Logout", logout_path, method: :delete, class: "rounded-lg border border-cyan-300 px-2 py-1 font-semibold hover:bg-cyan-50" %>
+            </div>
+          <% else %>
+            <div class="flex items-center gap-2 text-xs">
+              <%= link_to "Log in", login_path, class: "rounded-lg border border-cyan-300 bg-white/80 px-3 py-2 font-semibold text-cyan-700 hover:bg-cyan-50" %>
+              <%= link_to "Sign up", signup_path, class: "rounded-lg bg-cyan-600 px-3 py-2 font-semibold text-white hover:bg-cyan-700" %>
+            </div>
+          <% end %>
+        </div>
+      </header>
+
+      <% if notice.present? %>
+        <div class="mb-4 rounded-xl border border-emerald-300 bg-emerald-100 px-4 py-3 text-emerald-800"><%= notice %></div>
+      <% end %>
+
+      <% if alert.present? %>
+        <div class="mb-4 rounded-xl border border-rose-300 bg-rose-100 px-4 py-3 text-rose-800"><%= alert %></div>
+      <% end %>
+
+      <%= yield %>
+    </main>
+  </body>
+</html>

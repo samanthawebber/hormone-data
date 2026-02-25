@@ -1,0 +1,19 @@
+<section class="mx-auto max-w-lg rounded-2xl border border-slate-200 bg-white/95 p-6 shadow-sm">
+  <h2 class="text-2xl font-semibold text-emerald-800">Log in</h2>
+  <p class="mt-1 text-sm text-slate-600">Sign in to submit data and create studies.</p>
+
+  <%= form_with url: login_path, class: "mt-5 space-y-4" do |form| %>
+    <div>
+      <%= form.label :email, class: "mb-1 block text-sm font-medium text-slate-700" %>
+      <%= form.email_field :email, required: true, class: "w-full rounded-xl border-slate-300" %>
+    </div>
+
+    <div>
+      <%= form.label :password, class: "mb-1 block text-sm font-medium text-slate-700" %>
+      <%= form.password_field :password, required: true, class: "w-full rounded-xl border-slate-300" %>
+    </div>
+
+    <%= form.submit "Log in", class: "w-full rounded-xl bg-cyan-600 px-4 py-2 text-sm font-semibold text-white hover:bg-cyan-700" %>
+    <p class="text-center text-sm text-slate-600">No account yet? <%= link_to "Sign up", signup_path, class: "font-semibold text-cyan-700" %></p>
+  <% end %>
+</section>

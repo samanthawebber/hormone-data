@@ -1,0 +1,68 @@
+<section class="rounded-2xl border border-slate-200 bg-white/95 p-6 shadow-sm">
+  <h2 class="text-2xl font-semibold text-emerald-800">Create a new study</h2>
+  <p class="mt-1 text-sm text-slate-600">Define what data people should submit and how values are measured.</p>
+
+  <%= form_with model: @study, class: "mt-6 space-y-6" do |form| %>
+    <% if @study.errors.any? %>
+      <div class="rounded-xl border border-rose-300 bg-rose-50 p-4 text-sm text-rose-700">
+        <p class="font-semibold">Fix the following:</p>
+        <ul class="mt-1 list-disc pl-5">
+          <% @study.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div class="sm:col-span-2">
+        <%= form.label :title, class: "mb-1 block text-sm font-medium text-slate-700" %>
+        <%= form.text_field :title, class: "w-full rounded-xl border-slate-300 focus:border-emerald-500 focus:ring-emerald-500" %>
+      </div>
+
+      <div>
+        <%= form.label :topic, class: "mb-1 block text-sm font-medium text-slate-700" %>
+        <%= form.text_field :topic, placeholder: "e.g. Thyroid, Cycle, Cortisol", class: "w-full rounded-xl border-slate-300 focus:border-cyan-500 focus:ring-cyan-500" %>
+      </div>
+
+      <div class="sm:col-span-2">
+        <%= form.label :description, class: "mb-1 block text-sm font-medium text-slate-700" %>
+        <%= form.text_area :description, rows: 4, class: "w-full rounded-xl border-slate-300 focus:border-violet-500 focus:ring-violet-500" %>
+      </div>
+    </div>
+
+    <div class="space-y-3">
+      <h3 class="text-sm font-semibold uppercase tracking-[0.15em] text-violet-700">Parameters (up to 5)</h3>
+
+      <%= form.fields_for :study_parameters do |parameter_fields| %>
+        <div class="grid gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 sm:grid-cols-4">
+          <div class="sm:col-span-2">
+            <%= parameter_fields.label :name, "Parameter", class: "mb-1 block text-xs font-medium text-slate-600" %>
+            <%= parameter_fields.text_field :name, placeholder: "e.g. Estradiol", class: "w-full rounded-lg border-slate-300 text-sm" %>
+          </div>
+          <div>
+            <%= parameter_fields.label :unit, class: "mb-1 block text-xs font-medium text-slate-600" %>
+            <%= parameter_fields.text_field :unit, placeholder: "pg/mL", class: "w-full rounded-lg border-slate-300 text-sm" %>
+          </div>
+          <div>
+            <%= parameter_fields.label :position, class: "mb-1 block text-xs font-medium text-slate-600" %>
+            <%= parameter_fields.number_field :position, class: "w-full rounded-lg border-slate-300 text-sm" %>
+          </div>
+          <div>
+            <%= parameter_fields.label :min_value, class: "mb-1 block text-xs font-medium text-slate-600" %>
+            <%= parameter_fields.number_field :min_value, step: :any, class: "w-full rounded-lg border-slate-300 text-sm" %>
+          </div>
+          <div>
+            <%= parameter_fields.label :max_value, class: "mb-1 block text-xs font-medium text-slate-600" %>
+            <%= parameter_fields.number_field :max_value, step: :any, class: "w-full rounded-lg border-slate-300 text-sm" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <%= form.submit "Create study", class: "rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" %>
+      <%= link_to "Cancel", studies_path, class: "text-sm font-medium text-slate-600 hover:text-slate-900" %>
+    </div>
+  <% end %>
+</section>
