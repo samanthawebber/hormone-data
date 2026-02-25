@@ -1,24 +1,47 @@
-# README
+# Hormone Data API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails API for user-authenticated hormone studies and submissions.
 
-Things you may want to cover:
+## Run with Docker
 
-* Ruby version
+### Requirements
+- Docker Desktop (or Docker Engine + Compose v2)
 
-* System dependencies
+### Start API
+```bash
+docker compose up --build
+```
 
-* Configuration
+API will be available at `http://localhost:3000`.
 
-* Database creation
+### Stop API
+```bash
+docker compose down
+```
 
-* Database initialization
+### Reset local DB volume (optional)
+```bash
+docker compose down -v
+```
 
-* How to run the test suite
+## Auth Flow (API)
 
-* Services (job queues, cache servers, search engines, etc.)
+### Sign up
+```bash
+curl -X POST http://localhost:3000/signup \
+  -H "Content-Type: application/json" \
+  -d '{"user":{"email":"user@example.com","password":"password123","password_confirmation":"password123"}}'
+```
 
-* Deployment instructions
+### Log in
+```bash
+curl -X POST http://localhost:3000/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@example.com","password":"password123"}'
+```
 
-* ...
+### Profile
+```bash
+curl http://localhost:3000/profile \
+  -H "Authorization: Bearer <token>"
+```

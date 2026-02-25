@@ -130,3 +130,271 @@ Started GET "/users/login" for ::1 at 2026-02-25 07:55:40 -0700
   
 ActionController::RoutingError (No route matches [GET] "/users/login"):
   
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "studies"[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE TABLE "studies" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar NOT NULL, "topic" varchar, "description" text NOT NULL, "user_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "slug" varchar NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_studies_on_slug" ON "studies" ("slug")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_studies_on_user_id" ON "studies" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "study_parameters"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "study_parameters" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "study_id" integer NOT NULL, "name" varchar NOT NULL, "unit" varchar, "min_value" decimal(10,2), "max_value" decimal(10,2), "position" integer, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_study_parameters_on_study_id" ON "study_parameters" ("study_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "submissions"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "submissions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "study_id" integer NOT NULL, "user_id" integer NOT NULL, "values" text NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_submissions_on_study_id_and_created_at" ON "submissions" ("study_id", "created_at")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_submissions_on_study_id" ON "submissions" ("study_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_submissions_on_user_id" ON "submissions" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar NOT NULL, "password_digest" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "api_token" varchar NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_api_token" ON "users" ("api_token")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (1.2ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "astudies" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar NOT NULL, "topic" varchar DEFAULT NULL, "description" text NOT NULL, "user_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "slug" varchar NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_astudies_on_user_id" ON "astudies" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_astudies_on_slug" ON "astudies" ("slug")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "astudies" ("id","title","topic","description","user_id","created_at","updated_at","slug")
+                     SELECT "id","title","topic","description","user_id","created_at","updated_at","slug" FROM "studies"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "studies"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "studies" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar NOT NULL, "topic" varchar DEFAULT NULL, "description" text NOT NULL, "user_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "slug" varchar NOT NULL, CONSTRAINT "fk_rails_0e125221fd"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_studies_on_slug" ON "studies" ("slug")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_studies_on_user_id" ON "studies" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "studies" ("id","title","topic","description","user_id","created_at","updated_at","slug")
+                     SELECT "id","title","topic","description","user_id","created_at","updated_at","slug" FROM "astudies"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "astudies"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.6ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "astudy_parameters" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "study_id" integer NOT NULL, "name" varchar NOT NULL, "unit" varchar DEFAULT NULL, "min_value" decimal(10,2) DEFAULT NULL, "max_value" decimal(10,2) DEFAULT NULL, "position" integer DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_astudy_parameters_on_study_id" ON "astudy_parameters" ("study_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "astudy_parameters" ("id","study_id","name","unit","min_value","max_value","position","created_at","updated_at")
+                     SELECT "id","study_id","name","unit","min_value","max_value","position","created_at","updated_at" FROM "study_parameters"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "study_parameters"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "study_parameters" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "study_id" integer NOT NULL, "name" varchar NOT NULL, "unit" varchar DEFAULT NULL, "min_value" decimal(10,2) DEFAULT NULL, "max_value" decimal(10,2) DEFAULT NULL, "position" integer DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_2aa25fd018"
+FOREIGN KEY ("study_id")
+  REFERENCES "studies" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_study_parameters_on_study_id" ON "study_parameters" ("study_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "study_parameters" ("id","study_id","name","unit","min_value","max_value","position","created_at","updated_at")
+                     SELECT "id","study_id","name","unit","min_value","max_value","position","created_at","updated_at" FROM "astudy_parameters"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "astudy_parameters"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.6ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "asubmissions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "study_id" integer NOT NULL, "user_id" integer NOT NULL, "values" text NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_asubmissions_on_user_id" ON "asubmissions" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_asubmissions_on_study_id" ON "asubmissions" ("study_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_asubmissions_on_study_id_and_created_at" ON "asubmissions" ("study_id", "created_at")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "asubmissions" ("id","study_id","user_id","values","created_at","updated_at")
+                     SELECT "id","study_id","user_id","values","created_at","updated_at" FROM "submissions"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "submissions"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "submissions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "study_id" integer NOT NULL, "user_id" integer NOT NULL, "values" text NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_402e9da257"
+FOREIGN KEY ("study_id")
+  REFERENCES "studies" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_submissions_on_study_id_and_created_at" ON "submissions" ("study_id", "created_at")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_submissions_on_study_id" ON "submissions" ("study_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_submissions_on_user_id" ON "submissions" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "submissions" ("id","study_id","user_id","values","created_at","updated_at")
+                     SELECT "id","study_id","user_id","values","created_at","updated_at" FROM "asubmissions"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "asubmissions"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "asubmissions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "study_id" integer NOT NULL, "user_id" integer NOT NULL, "values" text NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_asubmissions_on_user_id" ON "asubmissions" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_asubmissions_on_study_id" ON "asubmissions" ("study_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_asubmissions_on_study_id_and_created_at" ON "asubmissions" ("study_id", "created_at")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "asubmissions" ("id","study_id","user_id","values","created_at","updated_at")
+                     SELECT "id","study_id","user_id","values","created_at","updated_at" FROM "submissions"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "submissions"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "submissions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "study_id" integer NOT NULL, "user_id" integer NOT NULL, "values" text NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_402e9da257"
+FOREIGN KEY ("study_id")
+  REFERENCES "studies" ("id")
+, CONSTRAINT "fk_rails_8d85741475"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_submissions_on_study_id_and_created_at" ON "submissions" ("study_id", "created_at")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_submissions_on_study_id" ON "submissions" ("study_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_submissions_on_user_id" ON "submissions" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "submissions" ("id","study_id","user_id","values","created_at","updated_at")
+                     SELECT "id","study_id","user_id","values","created_at","updated_at" FROM "asubmissions"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "asubmissions"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20260225070500)[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20260225070400),
+(20260225070300),
+(20260225070200),
+(20260225070100),
+(20260225070000);[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2026-02-25 16:12:19.376752', '2026-02-25 16:12:19.376756') RETURNING "key"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', 'b57e7f3e084babdc8e5fe792bfb99764a3571da0', '2026-02-25 16:12:19.378996', '2026-02-25 16:12:19.378998') RETURNING "key"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "studies"[0m
+  [1m[35m (0.6ms)[0m  [1m[35mCREATE TABLE "studies" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar NOT NULL, "topic" varchar, "description" text NOT NULL, "user_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "slug" varchar NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_studies_on_slug" ON "studies" ("slug")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_studies_on_user_id" ON "studies" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "study_parameters"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "study_parameters" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "study_id" integer NOT NULL, "name" varchar NOT NULL, "unit" varchar, "min_value" decimal(10,2), "max_value" decimal(10,2), "position" integer, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_study_parameters_on_study_id" ON "study_parameters" ("study_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "submissions"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "submissions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "study_id" integer NOT NULL, "user_id" integer NOT NULL, "values" text NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_submissions_on_study_id_and_created_at" ON "submissions" ("study_id", "created_at")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_submissions_on_study_id" ON "submissions" ("study_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_submissions_on_user_id" ON "submissions" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar NOT NULL, "password_digest" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "api_token" varchar NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_api_token" ON "users" ("api_token")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.6ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "astudies" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar NOT NULL, "topic" varchar DEFAULT NULL, "description" text NOT NULL, "user_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "slug" varchar NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_astudies_on_user_id" ON "astudies" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_astudies_on_slug" ON "astudies" ("slug")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "astudies" ("id","title","topic","description","user_id","created_at","updated_at","slug")
+                     SELECT "id","title","topic","description","user_id","created_at","updated_at","slug" FROM "studies"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "studies"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "studies" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar NOT NULL, "topic" varchar DEFAULT NULL, "description" text NOT NULL, "user_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "slug" varchar NOT NULL, CONSTRAINT "fk_rails_0e125221fd"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_studies_on_slug" ON "studies" ("slug")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_studies_on_user_id" ON "studies" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "studies" ("id","title","topic","description","user_id","created_at","updated_at","slug")
+                     SELECT "id","title","topic","description","user_id","created_at","updated_at","slug" FROM "astudies"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "astudies"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "astudy_parameters" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "study_id" integer NOT NULL, "name" varchar NOT NULL, "unit" varchar DEFAULT NULL, "min_value" decimal(10,2) DEFAULT NULL, "max_value" decimal(10,2) DEFAULT NULL, "position" integer DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_astudy_parameters_on_study_id" ON "astudy_parameters" ("study_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "astudy_parameters" ("id","study_id","name","unit","min_value","max_value","position","created_at","updated_at")
+                     SELECT "id","study_id","name","unit","min_value","max_value","position","created_at","updated_at" FROM "study_parameters"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "study_parameters"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "study_parameters" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "study_id" integer NOT NULL, "name" varchar NOT NULL, "unit" varchar DEFAULT NULL, "min_value" decimal(10,2) DEFAULT NULL, "max_value" decimal(10,2) DEFAULT NULL, "position" integer DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_2aa25fd018"
+FOREIGN KEY ("study_id")
+  REFERENCES "studies" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_study_parameters_on_study_id" ON "study_parameters" ("study_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "study_parameters" ("id","study_id","name","unit","min_value","max_value","position","created_at","updated_at")
+                     SELECT "id","study_id","name","unit","min_value","max_value","position","created_at","updated_at" FROM "astudy_parameters"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "astudy_parameters"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.8ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "asubmissions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "study_id" integer NOT NULL, "user_id" integer NOT NULL, "values" text NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "tindex_asubmissions_on_user_id" ON "asubmissions" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_asubmissions_on_study_id" ON "asubmissions" ("study_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_asubmissions_on_study_id_and_created_at" ON "asubmissions" ("study_id", "created_at")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "asubmissions" ("id","study_id","user_id","values","created_at","updated_at")
+                     SELECT "id","study_id","user_id","values","created_at","updated_at" FROM "submissions"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "submissions"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "submissions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "study_id" integer NOT NULL, "user_id" integer NOT NULL, "values" text NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_402e9da257"
+FOREIGN KEY ("study_id")
+  REFERENCES "studies" ("id")
+)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_submissions_on_study_id_and_created_at" ON "submissions" ("study_id", "created_at")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_submissions_on_study_id" ON "submissions" ("study_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_submissions_on_user_id" ON "submissions" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "submissions" ("id","study_id","user_id","values","created_at","updated_at")
+                     SELECT "id","study_id","user_id","values","created_at","updated_at" FROM "asubmissions"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "asubmissions"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "asubmissions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "study_id" integer NOT NULL, "user_id" integer NOT NULL, "values" text NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_asubmissions_on_user_id" ON "asubmissions" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_asubmissions_on_study_id" ON "asubmissions" ("study_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_asubmissions_on_study_id_and_created_at" ON "asubmissions" ("study_id", "created_at")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "asubmissions" ("id","study_id","user_id","values","created_at","updated_at")
+                     SELECT "id","study_id","user_id","values","created_at","updated_at" FROM "submissions"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "submissions"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "submissions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "study_id" integer NOT NULL, "user_id" integer NOT NULL, "values" text NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_402e9da257"
+FOREIGN KEY ("study_id")
+  REFERENCES "studies" ("id")
+, CONSTRAINT "fk_rails_8d85741475"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_submissions_on_study_id_and_created_at" ON "submissions" ("study_id", "created_at")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_submissions_on_study_id" ON "submissions" ("study_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_submissions_on_user_id" ON "submissions" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "submissions" ("id","study_id","user_id","values","created_at","updated_at")
+                     SELECT "id","study_id","user_id","values","created_at","updated_at" FROM "asubmissions"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "asubmissions"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20260225070500)[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20260225070400),
+(20260225070300),
+(20260225070200),
+(20260225070100),
+(20260225070000);[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2026-02-25 16:12:19.457944', '2026-02-25 16:12:19.457948') RETURNING "key"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Update (0.0ms)[0m  [1m[33mUPDATE "ar_internal_metadata" SET "value" = 'test', "updated_at" = '2026-02-25 16:12:19.459552' WHERE "ar_internal_metadata"."key" = 'environment'[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', 'b57e7f3e084babdc8e5fe792bfb99764a3571da0', '2026-02-25 16:12:19.460676', '2026-02-25 16:12:19.460677') RETURNING "key"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/" for 192.168.65.1 at 2026-02-25 16:15:07 +0000
+Cannot render console from 192.168.65.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /usr/local/bundle/gems/railties-7.1.6/libtemplates/rails/welcome/index.html.erb
+  Rendered /usr/local/bundle/gems/railties-7.1.6/libtemplates/rails/welcome/index.html.erb (Duration: 1.0ms | Allocations: 376)
+Completed 200 OK in 18ms (Views: 5.4ms | ActiveRecord: 0.0ms | Allocations: 7906)
+
+

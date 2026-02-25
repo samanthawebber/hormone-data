@@ -1,0 +1,23 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: hormone-data-api:dev
+    container_name: hormone-data-api
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: development
+      RACK_ENV: development
+    volumes:
+      - .:/rails
+      - bundle_cache:/usr/local/bundle
+      - rails_storage:/rails/storage
+      - rails_tmp:/rails/tmp
+    command: bash -lc "bundle install && bin/rails db:prepare && bin/rails server -b 0.0.0.0 -p 3000"
+
+volumes:
+  bundle_cache:
+  rails_storage:
+  rails_tmp:
